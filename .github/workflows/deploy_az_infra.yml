@@ -2,7 +2,7 @@ name: Azure Services Deploy
 
 on:
 
- workflow_dispatch:
+  workflow_dispatch:
     # Inputs the workflow accepts.
     inputs:
       name:
@@ -23,16 +23,16 @@ jobs:
   terraform:
     runs-on: ubuntu-latest
 
-   env:
+    env:
       ARM_CLIENT_ID: ${{secrets.TF_ARM_CLIENT_ID}}
       ARM_CLIENT_SECRET: ${{secrets.TF_ARM_CLIENT_SECRET}}
       ARM_SUBSCRIPTION_ID: ${{secrets.TF_ARM_SUBSCRIPTION_ID}}
       ARM_TENANT_ID: ${{secrets.TF_ARM_TENANT_ID}}
 
-   steps:
+    steps:
       - uses: actions/checkout@v2
 
-     - name: Setup Terraform
+      - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
         
       - name: Terraform Init
@@ -41,6 +41,5 @@ jobs:
       - name: Terraform Plan
         run: terraform plan -var "client_id=${{secrets.TF_ARM_CLIENT_ID}}" -var "client_secret=${{secrets.TF_ARM_CLIENT_SECRET}}" -var "tenant_id=${{secrets.TF_ARM_TENANT_ID}}" -var "subscription_id=${{secrets.TF_ARM_SUBSCRIPTION_ID}}"
 
-
-     - name: Terraform Apply
+      - name: Terraform Apply
         run: terraform apply -var "client_id=${{secrets.TF_ARM_CLIENT_ID}}" -var "client_secret=${{secrets.TF_ARM_CLIENT_SECRET}}" -var "tenant_id=${{secrets.TF_ARM_TENANT_ID}}" -var "subscription_id=${{secrets.TF_ARM_SUBSCRIPTION_ID}}" -auto-approve
